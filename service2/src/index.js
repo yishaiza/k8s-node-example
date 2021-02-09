@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
 const requests = [];
@@ -9,7 +10,22 @@ const getServerName = () => {
     return os.hostname()
 }
 
-const otherServiceUrl = process.env.server1 || 'http://localhost:4001/requests'
+let otherServiceUrl;
+const otherServicePort = process.env.otherServicePort
+
+if(otherServicePort){
+    otherServiceUrl = `service1:${otherServicePort}`
+}
+else {
+    // console.log('otherServiceUrl hardcoded')
+    otherServiceUrl = 'localhost:4001'
+}
+console.log({otherServiceUrl})
+
+// const otherServiceUrl = process.env.server1 || 'http://localhost:4001'
+// const otherServiceUrl = 'http://service1'
+
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send({'hello': 'server2', 'name': getServerName()});
@@ -29,7 +45,10 @@ app.get('/requests', (req, res) => {
 
 app.get('/requests-other', async (req, res) => {
     try {
-        const result = await axios.get(otherServiceUrl)
+        const url = `http://${otherServiceUrl}/requests`
+        console.log('requests-other')
+        console.log({url})
+        const result = await axios.get(url)
         const {data} = result
         console.log('result', data)
 
