@@ -6,9 +6,7 @@ services:
     environment:
       - port=3001
       - otherServicePort=3002
-#    networks:
-#      - app-network
-  
+
   service2:
     build: ./service2
     ports:
@@ -16,8 +14,3 @@ services:
     environment:
       - port=3002
       - otherServicePort=3001
-#    networks:
-#      - app-network
-#networks:
-#  app-network:
-#    driver: bridge
