@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: service2-deploy
+  namespace: example
 spec:
   replicas: 1
   selector:
